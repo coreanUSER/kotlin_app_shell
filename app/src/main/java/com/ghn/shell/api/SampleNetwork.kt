@@ -3,14 +3,18 @@ package com.ghn.shell.api
 import retrofit2.http.*
 import retrofit2.http.Body
 
+// SampleService? 고민...중
 interface SampleNetwork {
 
     @Headers("")
     @GET("")
-    suspend fun getName(@Query("id") id: String): String
+    suspend fun getUrl(@Query("id") id: String): String
 
     @GET("")
-    suspend fun getName(@Header("") authorize: String,@Query("id") id: String)
+    suspend fun getUrl(@Header("") authorize: String,@Query("id") id: String): String
+
+    @GET("")
+    suspend fun getAll(@Query("id") id: String): SampleResponse
 
     @POST("")
     suspend fun setSample(@Body request: SampleRequest)

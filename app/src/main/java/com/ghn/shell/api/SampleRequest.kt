@@ -4,8 +4,7 @@ import com.google.gson.annotations.SerializedName
 import org.json.JSONObject
 
 data class SampleRequest (
+    val id: String,
     val name: String,
-    val age: Int,
-    @SerializedName("detail")
-    val detailInfo: JSONObject? = null
+    val imgUrl: String? = ""
 )
