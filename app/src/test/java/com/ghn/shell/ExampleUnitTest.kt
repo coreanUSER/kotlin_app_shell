@@ -1,4 +1,4 @@
-package com.ghn.Shell
+package com.ghn.shell
 
 import org.junit.Test
 

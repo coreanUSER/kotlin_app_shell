@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'kotlin-kapt'
 }
 
 android {
@@ -8,7 +9,7 @@ android {
     buildToolsVersion "29.0.3"
 
     defaultConfig {
-        applicationId "com.ghn.Shell"
+        applicationId "com.ghn.shell"
         minSdkVersion 17
         targetSdkVersion 30
         versionCode 1
@@ -36,10 +37,56 @@ dependencies {
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'androidx.core:core-ktx:1.3.2'
-    implementation 'androidx.appcompat:appcompat:1.2.0'
-    implementation 'com.google.android.material:material:1.3.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
-    testImplementation 'junit:junit:4.+'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    implementation "androidx.activity:activity-ktx:1.2.0"
+
+    // Coroutines
+    // Kotlin 1.3 Version 이상에서는 Coroutine Library 포함되어 있음.
+    // implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.3-native-mt"
+    // implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.3-native-mt"
+
+    // Network & Serialization
+    implementation"com.google.code.gson:gson:2.8.6"
+    implementation"com.squareup.retrofit2:converter-gson:2.9.0"
+    implementation"com.squareup.retrofit2:retrofit:2.9.0"
+    implementation "com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.2"
+
+    // Room for Database
+    implementation "androidx.room:room-ktx:2.2.6"
+    kapt "androidx.room:room-compiler:2.2.6"
+    androidTestImplementation "androidx.room:room-testing:2.2.6"
+
+    // ViewModel and LiveData
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.0"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.3.0"
+    implementation "androidx.lifecycle:lifecycle-common-java8:2.3.0"
+
+    // UI
+    implementation "androidx.appcompat:appcompat:1.2.0"
+    implementation "androidx.constraintlayout:constraintlayout:2.0.4"
+    implementation "com.google.android.material:material:1.3.0"
+
+    //// Test Library
+    testImplementation "junit:junit:4.13.2"
+    // Coroutines testing
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.4.3-native-mt"
+    // mocks
+    testImplementation "org.mockito:mockito-core:2.23.4"
+    //  Architecture Components testing libraries
+    testImplementation "androidx.arch.core:core-testing:2.1.0"
+
+    //// Android Test Library
+    androidTestImplementation "junit:junit:4.13.2"
+    androidTestImplementation "androidx.test:runner:1.3.0"
+    androidTestImplementation "androidx.test:rules:1.3.0"
+    // Espresso
+    androidTestImplementation "androidx.test.espresso:espresso-core:3.3.0"
+    androidTestImplementation "androidx.test.espresso:espresso-contrib:3.3.0"
+    androidTestImplementation "androidx.test.espresso:espresso-intents:3.3.0"
+    // Architecture Components testing libraries
+    androidTestImplementation "androidx.arch.core:core-testing:2.1.0"
+    androidTestImplementation "androidx.work:work-testing:2.5.0"
+    androidTestImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.4.3-native-mt"
+
+    //// Debug Library
+    debugImplementation "com.google.truth:truth:1.1.2"
 }
