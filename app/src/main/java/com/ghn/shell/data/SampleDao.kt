@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
 // https://medium.com/androiddevelopers/7-pro-tips-for-room-fbadea4bfbd1#4785
 @Dao
 interface SampleDao {
-    
+
     @Transaction
     suspend fun updateDataAll(samples: List<Sample>) {
         deleteAll()
