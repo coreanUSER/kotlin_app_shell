@@ -5,6 +5,8 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
 
 @Database(entities = [Sample::class], version = 1, exportSchema = false)
@@ -12,35 +14,51 @@ abstract class SampleDatabase : RoomDatabase() {
 
     abstract fun sampleDao(): SampleDao
 
-    companion object {
-        // For Singleton instantiation
-        @Volatile
-        private var instance: SampleDatabase? = null
+    private class SampleDatabaseCallBack(
+        private val scope: CoroutineScope
+    ) : RoomDatabase.Callback() {
+        // onCreate : when the database is created for the first time, after the tables have been created
+        // onOpen : when the database was opened
+        //
+        // Since the DAOs can only be accessed once these methods return,
+        // we‘re creating a new thread where we’re getting a reference to the database,
+        // get the DAO, and then insert the data.
+        override fun onCreate(db: SupportSQLiteDatabase) {
+            super.onCreate(db)
+            INSTANCE?.let { database ->
+                scope.launch {
+                    var sampleDao = database.sampleDao()
 
-        fun getInstance(context: Context): SampleDatabase {
-            return instance ?: synchronized(this) {
-                instance ?: buildDatabase(context).also { instance = it }
+                    // initialized
+                    // sampleDao.deleteAll()
+                }
             }
         }
+    }
 
-        // Create and pre-populate the database. See this article for more details:
-        // https://medium.com/google-developers/7-pro-tips-for-room-fbadea4bfbd1#4785
-        private fun buildDatabase(context: Context): SampleDatabase {
-            return Room.databaseBuilder(context, SampleDatabase::class.java, "SAMPLE_DB")
-                .addCallback(
+    companion object {
+        // Singleton prevents multiple instances of database opening at the same time.
+        @Volatile
+        private var INSTANCE: SampleDatabase? = null
+
+        fun getDatabase(context: Context,
+                        scope: CoroutineScope
+        ): SampleDatabase {
+            // if the INSTANCE is not null, then return it,
+            // if it is, then create the database
+            return INSTANCE ?: synchronized(this) {
+                val instance = Room.databaseBuilder(
+                    context.applicationContext,
+                    SampleDatabase::class.java,
+                    "sample_database"
+                )
                     // addCallback : add default data to our database
-                    object : RoomDatabase.Callback() {
-                        // onCreate : when the database is created for the first time, after the tables have been created
-                        // onOpen : when the database was opened
-                        //
-                        // Since the DAOs can only be accessed once these methods return,
-                        // we‘re creating a new thread where we’re getting a reference to the database,
-                        // get the DAO, and then insert the data.
-                        override fun onCreate(db: SupportSQLiteDatabase) {
-                            super.onCreate(db)
-                        }
-                    }
-                ).build()
+                    .addCallback(SampleDatabaseCallBack(scope))
+                    .build()
+                INSTANCE = instance
+                // return instance
+                instance
+            }
         }
     }
 }
