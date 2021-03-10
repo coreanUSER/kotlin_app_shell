@@ -1,6 +1,8 @@
-package com.ghn.shell.data
+package com.ghn.shell
 
 import android.app.Application
+import com.ghn.shell.data.SampleDatabase
+import com.ghn.shell.data.SampleRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 

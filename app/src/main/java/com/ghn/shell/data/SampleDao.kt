@@ -15,16 +15,19 @@ interface SampleDao {
     }
 
     @Query("SELECT * FROM samples ORDER BY name")
-    fun getSamples(): Flow<List<Sample>>
+    fun allSamples(): Flow<List<Sample>>
 
     @Query("SELECT * FROM samples WHERE id = :_id")
-    fun getSample(_id: String): Flow<Sample>
+    fun get(_id: String): Flow<Sample>
 
     // REPLACE : replace the old data and continue the transaction.
     // IGNORE : ignore the conflict. (Continue)
     // ABORT : abort the transaction. (Break)
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(samples: List<Sample>)
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insert(sample: Sample)
 
     @Query("DELETE FROM samples")
     fun deleteAll()

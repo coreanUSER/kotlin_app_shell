@@ -1,4 +1,4 @@
-package com.ghn.shell.views
+package com.ghn.shell
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
