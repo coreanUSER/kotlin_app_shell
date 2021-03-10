@@ -5,6 +5,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 
@@ -21,8 +22,8 @@ class SampleAddActivity : AppCompatActivity() {
         saveButton.setOnClickListener {
             val intent = Intent()
             if (!TextUtils.isEmpty(editTextName.text)) {
-                val name = editTextName.text
-                val imgUrl = editTextImgUrl.text ?: ""
+                val name = editTextName.text.toString()
+                val imgUrl = (editTextImgUrl.text ?: "").toString()
                 intent.putExtra("name", name)
                 intent.putExtra("imgUrl", imgUrl)
                 setResult(Activity.RESULT_OK, intent)

@@ -1,6 +1,8 @@
 package com.ghn.shell
 
 import android.app.Application
+import android.app.ApplicationErrorReport
+import androidx.multidex.MultiDexApplication
 import com.ghn.shell.data.SampleDatabase
 import com.ghn.shell.data.SampleRepository
 import kotlinx.coroutines.CoroutineScope

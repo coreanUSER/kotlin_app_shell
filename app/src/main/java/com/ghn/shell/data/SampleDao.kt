@@ -14,11 +14,11 @@ interface SampleDao {
         insertAll(samples)
     }
 
-    @Query("SELECT * FROM samples ORDER BY name")
+    @Query("SELECT * FROM samples ORDER BY created desc")
     fun allSamples(): Flow<List<Sample>>
 
-    @Query("SELECT * FROM samples WHERE id = :_id")
-    fun get(_id: String): Flow<Sample>
+    @Query("SELECT * FROM samples WHERE id = :id")
+    fun get(id: String): Flow<Sample>
 
     // REPLACE : replace the old data and continue the transaction.
     // IGNORE : ignore the conflict. (Continue)

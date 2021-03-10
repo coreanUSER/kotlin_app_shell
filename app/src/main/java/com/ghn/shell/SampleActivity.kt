@@ -4,7 +4,11 @@ import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,7 +21,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class SampleActivity : AppCompatActivity() {
 
-    private val sampleActivityRequestCode = 1
     private val sampleViewModel: SampleViewModel by viewModels {
         SampleViewModelFactory((application as SampleApplication).repository)
     }
@@ -39,17 +42,18 @@ class SampleActivity : AppCompatActivity() {
         val fab = findViewById<FloatingActionButton>(R.id.sample_fab)
         fab.setOnClickListener {
             val intent = Intent(this@SampleActivity, SampleAddActivity::class.java)
-            startActivity(intent)
+            requestActivity.launch(intent)
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if(requestCode == sampleActivityRequestCode && resultCode == Activity.RESULT_OK) {
-            data?.let {
-                val name: String = it.getStringExtra("name") ?: ""
-                val imgUrl: String = it.getStringExtra("imgUrl") ?: ""
+    private val requestActivity: ActivityResultLauncher<Intent> = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if(result.resultCode == Activity.RESULT_OK) {
+            result.data?.let {
+                var resultIntent = it
+                val name: String = resultIntent.getStringExtra("name") ?: ""
+                val imgUrl: String = resultIntent.getStringExtra("imgUrl") ?: ""
                 val sample = Sample()
                 sample.name = name
                 sample.imgUrl = imgUrl
