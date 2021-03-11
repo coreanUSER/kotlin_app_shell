@@ -5,7 +5,7 @@ import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 
-@BindingAdapter("imageFromId")
+@BindingAdapter("imgFromId")
 fun bindImageFromId(view: ImageView, resId: Int) {
     Glide.with(view.context)
             .load(resId)
@@ -13,7 +13,7 @@ fun bindImageFromId(view: ImageView, resId: Int) {
             .into(view)
 }
 
-@BindingAdapter("imageFromUrl")
+@BindingAdapter("imgFromUrl")
 fun bindImageFromUrl(view: ImageView, imageUrl: String?) {
     if (!imageUrl.isNullOrEmpty()) {
         Glide.with(view.context)
