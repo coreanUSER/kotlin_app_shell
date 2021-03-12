@@ -2,14 +2,13 @@ package com.ghn.shell
 
 import android.app.Activity
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
-import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.NotificationManagerCompat
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -65,6 +64,15 @@ class SampleActivity : AppCompatActivity() {
                 "Empty Name Space",
                 Toast.LENGTH_LONG
             ).show()
+        }
+    }
+
+    // Notification Permission
+    private fun isPermissionGranted() {
+        val sets: Set<String> = NotificationManagerCompat.getEnabledListenerPackages(this)
+        if(!sets.contains(packageName)) {
+            val intent = Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS")
+            startActivity(intent)
         }
     }
 }
